@@ -346,7 +346,7 @@ public class Simulator extends javax.swing.JFrame {
         backgroundPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         closeButton.setBackground(new java.awt.Color(255, 255, 255));
-        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/close sij mancha.png"))); // NOI18N
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/close.png"))); // NOI18N
         closeButton.setBorderPainted(false);
         closeButton.setContentAreaFilled(false);
         closeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -354,7 +354,7 @@ public class Simulator extends javax.swing.JFrame {
                 closeButtonActionPerformed(evt);
             }
         });
-        backgroundPanel.add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 20, 50, 50));
+        backgroundPanel.add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 0, 130, 140));
 
         stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/stop.png"))); // NOI18N
         stopButton.setToolTipText("Stop");
