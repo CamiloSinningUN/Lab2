@@ -5,7 +5,9 @@
  */
 package lab02_juanjulio_jorgesalazar_camilosinning;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +34,7 @@ public class Simulator extends javax.swing.JFrame {
         setUndecorated(true);
         initialSettings.setVisible(true);
         initialSettings.setLocationRelativeTo(null);
-
+      
         //ubicar panel
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int sy = screenSize.height;
@@ -67,6 +69,8 @@ public class Simulator extends javax.swing.JFrame {
     Vértice PTR;
 
 
+   
+    
     //Matriz que representa las relaciones de unos nodos con otros en el grafo dirigido
     public void MatrizDeAdyacencia(int num_nodos) {
         int i = 0, j = 0;
@@ -209,6 +213,12 @@ public class Simulator extends javax.swing.JFrame {
         allMaskButton1 = new javax.swing.JButton();
         maskRandomButton1 = new javax.swing.JButton();
         withoutMaskButton1 = new javax.swing.JButton();
+        tablero = new javax.swing.JPanel(){
+            @Override
+            public void paint(Graphics g){
+                Graficar.GraficarNodo(g, 50, 0, 0, 1);
+            }
+        };
 
         initialSettings.setMinimumSize(new java.awt.Dimension(391, 605));
         initialSettings.setUndecorated(true);
@@ -450,6 +460,21 @@ public class Simulator extends javax.swing.JFrame {
 
         backgroundPanel.add(settingsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 90, 200));
 
+        tablero.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout tableroLayout = new javax.swing.GroupLayout(tablero);
+        tablero.setLayout(tableroLayout);
+        tableroLayout.setHorizontalGroup(
+            tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1110, Short.MAX_VALUE)
+        );
+        tableroLayout.setVerticalGroup(
+            tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 450, Short.MAX_VALUE)
+        );
+
+        backgroundPanel.add(tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, 1110, 450));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -518,7 +543,9 @@ public class Simulator extends javax.swing.JFrame {
         } catch (Exception e) {
             errorLabel.setText("Invalido");
         }
-
+        
+        
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_startButtonActionPerformed
 
@@ -665,6 +692,7 @@ public class Simulator extends javax.swing.JFrame {
     private javax.swing.JButton startButton;
     private javax.swing.JButton stopButton;
     private javax.swing.JLabel styleLabel;
+    private javax.swing.JPanel tablero;
     private javax.swing.JButton withoutMaskButton;
     private javax.swing.JButton withoutMaskButton1;
     // End of variables declaration//GEN-END:variables
