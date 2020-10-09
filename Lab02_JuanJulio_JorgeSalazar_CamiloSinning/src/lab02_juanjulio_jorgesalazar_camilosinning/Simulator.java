@@ -22,6 +22,119 @@ public class Simulator extends javax.swing.JFrame {
         setVisible(true);
     }
 
+    class Nodo {
+        int num, contagio, mascarilla;
+        Nodo link;
+    }
+
+    Nodo PTR = new Nodo();
+
+    //Matriz que representa las relaciones de unos nodos con otros en el grafo dirigido
+    public void MatrizDeAdyacencia(int num_nodos) {
+        int i = 0, j = 0;
+        int[][] Adyacencia = new int[num_nodos][num_nodos];
+
+        while (i < num_nodos) {
+            while (j < num_nodos) {
+                if (i == j) {
+                    Adyacencia[i][j] = 0;
+                } else {
+                    Adyacencia[i][j] = (int) (Math.random() * 2);
+                }
+                //Un 0 en la matriz significa que no están relacionados y un número entre 1 si existe una arista de i a j
+                if (Adyacencia[i][j] == 1){
+                    Adyacencia[i][j] = (int) (Math.random() * 5) + 1;
+                }
+                j++;
+            }
+            j = 0;
+            i++;
+        }
+        if (SinNodosAislados(Adyacencia, num_nodos) == true) {
+            MatrizDeAdyacencia(num_nodos);
+        }
+    }
+
+    //Verifica que no haya nodos aislados
+    boolean SinNodosAislados(int Matriz[][], int num_nodos) {
+        boolean Aislados = false;
+        int i = 0, j = 0, aux = 0, acum = 0, acum2 = 0;
+
+        while (i < num_nodos) {
+            while (j < num_nodos) {
+                acum = Matriz[i][j] + acum;
+                j++;
+            }
+            if (acum == 0) {
+                while (aux < num_nodos) {
+                    acum2 = Matriz[aux][i] + acum2;
+                    aux++;
+                }
+                if (acum2 == 0) {
+                    Aislados = true;
+                    return Aislados;
+                }
+            } else {
+                j = 0;
+                i++;
+            }
+        }
+        return Aislados;
+    }
+
+    //Crea una lista donde cada nodo tendrá las características de los nodos del grafo
+    public void GrafoComoLista(int num_nodos, int mascarilla) {
+        int i = 0;
+        Nodo p;
+        int infectado;
+        PTR = null;
+        while (i < num_nodos) {
+            Nodo q = new Nodo();
+            q.num = i + 1;
+            if (mascarilla == 0 || mascarilla == 1) {
+                q.mascarilla = mascarilla;
+            } else {
+                q.mascarilla = (int) (Math.random() * 2);
+            }
+            //1 significa que la persona está contagiada
+            //0 significa que la persona no está contagiada
+            q.contagio = 0;
+            if (PTR == null) {
+                PTR = q;
+            } else {
+                p = PTR;
+                while (p.link != null) {
+                    p = p.link;
+                }
+                p.link = q;
+                q.link = null;
+            }
+            i++;
+        }
+        infectado = PrimerInfectado(num_nodos);
+        ActualizaInfectados(infectado);
+    }
+
+    //Función que da al azar el primer infectado
+    int PrimerInfectado(int num_nodos) {
+        int infectado;
+        infectado = (int) (Math.random() * num_nodos) + 1;
+        return infectado;
+    }
+
+    //Función que actualiza la lista con los infectados
+    public void ActualizaInfectados(int infectado) {
+        Nodo p;
+
+        p = PTR;
+        while (p.num != infectado) {
+            p = p.link;
+        }
+        p.contagio = 1;
+    }
+    
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
