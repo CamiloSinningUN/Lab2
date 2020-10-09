@@ -40,12 +40,12 @@ public class Simulator extends javax.swing.JFrame {
         int sy = screenSize.height;
         int sx = screenSize.width;
         setLayout(null);
-        backgroundPanel.setSize(sx,sy);
+        backgroundPanel.setSize(sx, sy);
         backgroundPanel.setLayout(null);
         //Ubicar botones segun resolución de pantalla
         int x = backgroundPanel.getSize().width;
-        styleLabel.setLocation(x/2 - styleLabel.getSize().width/2 , 0);
-        numberLabel.setLocation(styleLabel.getLocation().x+styleLabel.getSize().width/2 -numberLabel.getSize().width/2  , 40);
+        styleLabel.setLocation(x / 2 - styleLabel.getSize().width / 2, 0);
+        numberLabel.setLocation(styleLabel.getLocation().x + styleLabel.getSize().width / 2 - numberLabel.getSize().width / 2, 40);
 
         //ubicando botones superiores
         int xr = styleLabel.getLocation().x;
@@ -57,22 +57,19 @@ public class Simulator extends javax.swing.JFrame {
 
         //Botones de reproduccion automatica
         int y = backgroundPanel.getSize().height;
-        playButton.setLocation(sx - playButton.getSize().width, sy / 2 - playButton.getHeight()/2 - 15);
-        stopButton.setLocation(sx - stopButton.getSize().width, sy / 2 + stopButton.getHeight()/2 - 5);
+        playButton.setLocation(sx - playButton.getSize().width, sy / 2 - playButton.getHeight() / 2 - 15);
+        stopButton.setLocation(sx - stopButton.getSize().width, sy / 2 + stopButton.getHeight() / 2 - 5);
 
         //ubicando settings
-        settingsPanel.setLocation(15, y / 2 - settingsPanel.getHeight()/2);
+        settingsPanel.setLocation(15, y / 2 - settingsPanel.getHeight() / 2);
 
     }
-
 
     Vértice PTR;
 
 
-   
-    
     //Matriz que representa las relaciones de unos nodos con otros en el grafo dirigido
-    public void MatrizDeAdyacencia(int num_nodos) {
+    public void MatrizDeAdyacencia(int num_nodos, int mascarilla) {
         int i = 0, j = 0;
         int[][] Adyacencia = new int[num_nodos][num_nodos];
 
@@ -93,8 +90,9 @@ public class Simulator extends javax.swing.JFrame {
             i++;
         }
         if (SinNodosAislados(Adyacencia, num_nodos)) {
-            MatrizDeAdyacencia(num_nodos);
+            MatrizDeAdyacencia(num_nodos, mascarilla);
         }
+        GrafoComoLista(num_nodos, mascarilla, Adyacencia);
     }
 
     //Verifica que no haya nodos aislados
@@ -125,7 +123,7 @@ public class Simulator extends javax.swing.JFrame {
     }
 
     //Crea una lista donde cada nodo tendrá las características de los nodos del grafo
-    public void GrafoComoLista(int num_nodos, int mascarilla) {
+    public void GrafoComoLista(int num_nodos, int mascarilla, int Matriz[][]) {
         int i = 0;
         Vértice p;
         int infectado;
@@ -134,14 +132,14 @@ public class Simulator extends javax.swing.JFrame {
         while (i < num_nodos) {
             Vértice q = null;
             if (mascarilla == 0 || mascarilla == 1) {
-                q = new Vértice(0,mascarilla, i + 1);
-                
+                q = new Vértice(0, mascarilla, i + 1);
+
                 //q.mascarilla = mascarilla;
             } else {
-                q = new Vértice(0,(int) (Math.random() * 2), i + 1);
+                q = new Vértice(0, (int) (Math.random() * 2), i + 1);
                 //q.mascarilla = (int) (Math.random() * 2);
             }
-            q.num = i + 1;
+            q.linkIncidentes = null;
             //1 significa que la persona está contagiada
             //0 significa que la persona no está contagiada
             if (PTR == null) {
@@ -156,14 +154,24 @@ public class Simulator extends javax.swing.JFrame {
             }
             i++;
         }
-        infectado = PrimerInfectado(num_nodos);
+        ListaDeAdyacencia(Matriz, num_nodos, mascarilla);
+        infectado = PrimerInfectado(num_nodos, Matriz);
         ActualizaInfectados(infectado);
+        //Si se dibuja aquí estaría el grafo con el primer infectado   
     }
 
     //Función que da al azar el primer infectado
-    int PrimerInfectado(int num_nodos) {
-        int infectado;
+    int PrimerInfectado(int num_nodos, int Matriz[][]) {
+        int infectado, j = 0, acum = 0;
+
         infectado = (int) (Math.random() * num_nodos) + 1;
+        while (j < num_nodos) {
+            acum = Matriz[infectado - 1][j] + acum;
+            j++;
+        }
+        if (acum == 0) {
+            PrimerInfectado(num_nodos, Matriz);
+        }
         return infectado;
     }
 
@@ -176,6 +184,40 @@ public class Simulator extends javax.swing.JFrame {
             p = p.link;
         }
         p.enfermo = 1;
+    }
+
+    //Crea una multilista con los grafos y sus conexiones a partir de la lista ya creada
+    public void ListaDeAdyacencia(int Matriz[][], int num_nodos, int mascarilla) {
+        Vértice p;
+        int i = 0, j = 0;
+
+        p = PTR;
+        while (i < num_nodos) {
+            while (j < num_nodos) {
+                if (Matriz[i][j] > 0) {
+                    Vértice q = new Vértice(0, mascarilla, j);
+                    while (p.num != (i + 1)) {
+                        p = p.link;
+                    }
+                    if (p.linkArista == null) {
+                        p.linkIncidentes = q;
+                    } else {
+                        while(p.linkIncidentes != null){
+                            p = p.linkIncidentes;
+                        }
+                        p.linkIncidentes = q;
+                        q.linkIncidentes = null;
+                    }
+                }
+                j++;
+            }
+            i++;
+        }
+    }
+    
+    //Se encarga de generar las iteraciones en simulador y actualizar 
+    public void Iteracion(){
+        
     }
 
     /**
