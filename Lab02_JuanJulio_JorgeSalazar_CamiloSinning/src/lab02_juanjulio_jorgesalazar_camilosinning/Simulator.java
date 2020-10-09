@@ -62,13 +62,9 @@ public class Simulator extends javax.swing.JFrame {
 
     }
 
-    class Nodo {
 
-        int num, contagio, mascarilla;
-        Nodo link;
-    }
+    Vértice PTR;
 
-    Nodo PTR = new Nodo();
 
     //Matriz que representa las relaciones de unos nodos con otros en el grafo dirigido
     public void MatrizDeAdyacencia(int num_nodos) {
@@ -126,20 +122,23 @@ public class Simulator extends javax.swing.JFrame {
     //Crea una lista donde cada nodo tendrá las características de los nodos del grafo
     public void GrafoComoLista(int num_nodos, int mascarilla) {
         int i = 0;
-        Nodo p;
+        Vértice p;
         int infectado;
         PTR = null;
+
         while (i < num_nodos) {
-            Nodo q = new Nodo();
-            q.num = i + 1;
+            Vértice q = null;
             if (mascarilla == 0 || mascarilla == 1) {
-                q.mascarilla = mascarilla;
+                q = new Vértice(0,mascarilla, i + 1);
+                
+                //q.mascarilla = mascarilla;
             } else {
-                q.mascarilla = (int) (Math.random() * 2);
+                q = new Vértice(0,(int) (Math.random() * 2), i + 1);
+                //q.mascarilla = (int) (Math.random() * 2);
             }
+            q.num = i + 1;
             //1 significa que la persona está contagiada
             //0 significa que la persona no está contagiada
-            q.contagio = 0;
             if (PTR == null) {
                 PTR = q;
             } else {
@@ -165,13 +164,13 @@ public class Simulator extends javax.swing.JFrame {
 
     //Función que actualiza la lista con los infectados
     public void ActualizaInfectados(int infectado) {
-        Nodo p;
+        Vértice p;
 
         p = PTR;
         while (p.num != infectado) {
             p = p.link;
         }
-        p.contagio = 1;
+        p.enfermo = 1;
     }
 
     /**

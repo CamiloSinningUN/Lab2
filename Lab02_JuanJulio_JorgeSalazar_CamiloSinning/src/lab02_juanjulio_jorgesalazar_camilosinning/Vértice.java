@@ -11,14 +11,19 @@ package lab02_juanjulio_jorgesalazar_camilosinning;
  */
 public class Vértice {
 
-    boolean enfermo; //Varible que determina si una persona posee o no el virus
-    boolean mascarilla; //Varible que determina el uso o no de la mascarilla por parte de una persona
-    int[] Aristas = new int[2];
+
+    int enfermo; //Varible que determina el contagio o no de una persona
+    int mascarilla; //Varible que determina el uso o no de la mascarilla por parte de una persona
+    int num;
+    Arista linkArista;
+    Vértice link;
+
     
 
-    public Vértice(boolean enfermo, boolean mascarilla) {
+    public Vértice(int enfermo, int mascarilla, int num) {
         this.enfermo = enfermo;
         this.mascarilla = mascarilla;
+        this.num = num;
     }
 
 }
