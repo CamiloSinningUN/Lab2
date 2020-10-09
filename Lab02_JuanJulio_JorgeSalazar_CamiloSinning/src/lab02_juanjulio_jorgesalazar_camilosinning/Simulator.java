@@ -48,15 +48,15 @@ public class Simulator extends javax.swing.JFrame {
         //ubicando botones superiores
         int xr = styleLabel.getLocation().x;
         nextButton.setLocation(xr + 150, 30);
-        resetButton.setLocation(xr - 140, 30);
+        resetButton.setLocation(xr - 120, 30);
 
         //ubicando boton de close
-        closeButton.setLocation(x - 100, 30);
+        closeButton.setLocation(x - closeButton.getSize().width, 0);
 
         //Botones de reproduccion automatica
         int y = backgroundPanel.getSize().height;
-        playButton.setLocation(sx - 70, sy / 2 - playButton.getHeight()/2 - 15);
-        stopButton.setLocation(sx - 70, sy / 2 + stopButton.getHeight()/2 - 5);
+        playButton.setLocation(sx - playButton.getSize().width, sy / 2 - playButton.getHeight()/2 - 15);
+        stopButton.setLocation(sx - stopButton.getSize().width, sy / 2 + stopButton.getHeight()/2 - 5);
 
         //ubicando settings
         settingsPanel.setLocation(15, y / 2 - settingsPanel.getHeight()/2);
@@ -346,7 +346,7 @@ public class Simulator extends javax.swing.JFrame {
         backgroundPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         closeButton.setBackground(new java.awt.Color(255, 255, 255));
-        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/close.png"))); // NOI18N
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/close sij mancha.png"))); // NOI18N
         closeButton.setBorderPainted(false);
         closeButton.setContentAreaFilled(false);
         closeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -354,7 +354,7 @@ public class Simulator extends javax.swing.JFrame {
                 closeButtonActionPerformed(evt);
             }
         });
-        backgroundPanel.add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 20, 80, -1));
+        backgroundPanel.add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 20, 50, 50));
 
         stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/stop.png"))); // NOI18N
         stopButton.setToolTipText("Stop");
@@ -365,7 +365,7 @@ public class Simulator extends javax.swing.JFrame {
                 stopButtonActionPerformed(evt);
             }
         });
-        backgroundPanel.add(stopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 360, 60, 60));
+        backgroundPanel.add(stopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 360, 120, 60));
 
         numberLabel.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 48)); // NOI18N
         numberLabel.setText("0");
@@ -400,7 +400,7 @@ public class Simulator extends javax.swing.JFrame {
                 playButtonActionPerformed(evt);
             }
         });
-        backgroundPanel.add(playButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 290, 60, 60));
+        backgroundPanel.add(playButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 290, 120, 60));
 
         settingsPanel.setBackground(new java.awt.Color(255, 255, 255));
         settingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Settings", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tw Cen MT Condensed", 0, 24))); // NOI18N
