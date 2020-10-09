@@ -39,26 +39,27 @@ public class Simulator extends javax.swing.JFrame {
         int sx = screenSize.width;
         setLayout(null);
         backgroundPanel.setSize(sx,sy);
+        backgroundPanel.setLayout(null);
         //Ubicar botones segun resolución de pantalla
         int x = backgroundPanel.getSize().width;
-        styleLabel.setLocation(x / 2, 0);
-        numberLabel.setLocation(x / 2 + 55, 40);
+        styleLabel.setLocation(x/2 - styleLabel.getSize().width/2 , 0);
+        numberLabel.setLocation(styleLabel.getLocation().x+styleLabel.getSize().width/2 -numberLabel.getSize().width/2  , 40);
 
         //ubicando botones superiores
         int xr = styleLabel.getLocation().x;
         nextButton.setLocation(xr + 150, 30);
-        resetButton.setLocation(xr - 150, 30);
+        resetButton.setLocation(xr - 140, 30);
 
         //ubicando boton de close
         closeButton.setLocation(x - 100, 30);
 
         //Botones de reproduccion automatica
         int y = backgroundPanel.getSize().height;
-        playButton.setLocation(x - 100, y / 2 + playButton.getHeight());
-        stopButton.setLocation(x - 100, y / 2 - stopButton.getHeight());
+        playButton.setLocation(sx - 70, sy / 2 - playButton.getHeight()/2 - 15);
+        stopButton.setLocation(sx - 70, sy / 2 + stopButton.getHeight()/2 - 5);
 
         //ubicando settings
-        settingsPanel.setLocation(x - 100, y / 2 - settingsPanel.getHeight());
+        settingsPanel.setLocation(15, y / 2 - settingsPanel.getHeight()/2);
 
     }
 
@@ -364,14 +365,14 @@ public class Simulator extends javax.swing.JFrame {
                 stopButtonActionPerformed(evt);
             }
         });
-        backgroundPanel.add(stopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 350, 110, -1));
+        backgroundPanel.add(stopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 360, 60, 60));
 
         numberLabel.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 48)); // NOI18N
         numberLabel.setText("0");
         backgroundPanel.add(numberLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 40, 20, -1));
 
         styleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/contador.png"))); // NOI18N
-        backgroundPanel.add(styleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 0, 140, -1));
+        backgroundPanel.add(styleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 0, 130, -1));
 
         resetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reset.png"))); // NOI18N
         resetButton.setToolTipText("Reset");
@@ -399,7 +400,7 @@ public class Simulator extends javax.swing.JFrame {
                 playButtonActionPerformed(evt);
             }
         });
-        backgroundPanel.add(playButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 280, 110, -1));
+        backgroundPanel.add(playButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 290, 60, 60));
 
         settingsPanel.setBackground(new java.awt.Color(255, 255, 255));
         settingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Settings", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tw Cen MT Condensed", 0, 24))); // NOI18N
