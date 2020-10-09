@@ -5,6 +5,8 @@
  */
 package lab02_juanjulio_jorgesalazar_camilosinning;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -30,34 +32,38 @@ public class Simulator extends javax.swing.JFrame {
         setUndecorated(true);
         initialSettings.setVisible(true);
         initialSettings.setLocationRelativeTo(null);
-        
+
+        //ubicar panel
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int sy = screenSize.height;
+        int sx = screenSize.width;
+        setLayout(null);
+        backgroundPanel.setSize(sx,sy);
         //Ubicar botones segun resolución de pantalla
-        int x = backgroundPanel.getSize().width;        
-        styleLabel.setLocation(x/2, 0);
-        numberLabel.setLocation(x/2+55, 40);
-        
+        int x = backgroundPanel.getSize().width;
+        styleLabel.setLocation(x / 2, 0);
+        numberLabel.setLocation(x / 2 + 55, 40);
+
         //ubicando botones superiores
         int xr = styleLabel.getLocation().x;
-        nextButton.setLocation(xr+150, 30);
-        resetButton.setLocation(xr-150,30);
-        
+        nextButton.setLocation(xr + 150, 30);
+        resetButton.setLocation(xr - 150, 30);
+
         //ubicando boton de close
-        closeButton.setLocation(x-100, 30);
-        
+        closeButton.setLocation(x - 100, 30);
+
         //Botones de reproduccion automatica
         int y = backgroundPanel.getSize().height;
-        playButton.setLocation(x-100,y/2+playButton.getHeight());
-        stopButton.setLocation(x-100,y/2-stopButton.getHeight());
-        
+        playButton.setLocation(x - 100, y / 2 + playButton.getHeight());
+        stopButton.setLocation(x - 100, y / 2 - stopButton.getHeight());
+
         //ubicando settings
-        settingsPanel.setLocation(x-100,y/2-settingsPanel.getHeight());
-        
-        
-        
+        settingsPanel.setLocation(x - 100, y / 2 - settingsPanel.getHeight());
 
     }
 
     class Nodo {
+
         int num, contagio, mascarilla;
         Nodo link;
     }
@@ -77,7 +83,7 @@ public class Simulator extends javax.swing.JFrame {
                     Adyacencia[i][j] = (int) (Math.random() * 2);
                 }
                 //Un 0 en la matriz significa que no están relacionados y un número entre 1 si existe una arista de i a j
-                if (Adyacencia[i][j] == 1){
+                if (Adyacencia[i][j] == 1) {
                     Adyacencia[i][j] = (int) (Math.random() * 5) + 1;
                 }
                 j++;
@@ -167,8 +173,6 @@ public class Simulator extends javax.swing.JFrame {
         }
         p.contagio = 1;
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
