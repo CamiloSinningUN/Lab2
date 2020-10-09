@@ -11,7 +11,7 @@ package lab02_juanjulio_jorgesalazar_camilosinning;
  */
 public class Vértice {
 
-    boolean enfermo; //Varible que determina el contagio o no de una persona
+    boolean enfermo; //Varible que determina si una persona posee o no el virus
     boolean mascarilla; //Varible que determina el uso o no de la mascarilla por parte de una persona
     int[] Aristas = new int[2];
     
