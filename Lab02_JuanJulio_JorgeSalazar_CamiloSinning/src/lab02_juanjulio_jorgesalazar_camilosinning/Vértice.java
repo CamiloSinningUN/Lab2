@@ -17,7 +17,7 @@ public class Vértice {
     int num;
     Arista linkArista;
     Vértice link;
-
+    Vértice linkIncidentes;
     
 
     public Vértice(int enfermo, int mascarilla, int num) {
