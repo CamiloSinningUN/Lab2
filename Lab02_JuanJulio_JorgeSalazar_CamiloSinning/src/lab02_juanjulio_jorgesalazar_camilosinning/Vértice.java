@@ -11,11 +11,13 @@ package lab02_juanjulio_jorgesalazar_camilosinning;
  */
 public class Vértice {
 
+
     int enfermo; //Varible que determina el contagio o no de una persona
     int mascarilla; //Varible que determina el uso o no de la mascarilla por parte de una persona
     int num;
     Arista linkArista;
     Vértice link;
+
     
 
     public Vértice(int enfermo, int mascarilla, int num) {

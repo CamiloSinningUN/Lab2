@@ -30,6 +30,30 @@ public class Simulator extends javax.swing.JFrame {
         setUndecorated(true);
         initialSettings.setVisible(true);
         initialSettings.setLocationRelativeTo(null);
+        
+        //Ubicar botones segun resolución de pantalla
+        int x = backgroundPanel.getSize().width;        
+        styleLabel.setLocation(x/2, 0);
+        numberLabel.setLocation(x/2+55, 40);
+        
+        //ubicando botones superiores
+        int xr = styleLabel.getLocation().x;
+        nextButton.setLocation(xr+150, 30);
+        resetButton.setLocation(xr-150,30);
+        
+        //ubicando boton de close
+        closeButton.setLocation(x-100, 30);
+        
+        //Botones de reproduccion automatica
+        int y = backgroundPanel.getSize().height;
+        playButton.setLocation(x-100,y/2+playButton.getHeight());
+        stopButton.setLocation(x-100,y/2-stopButton.getHeight());
+        
+        //ubicando settings
+        settingsPanel.setLocation(x-100,y/2-settingsPanel.getHeight());
+        
+        
+        
 
     }
 
@@ -56,7 +80,7 @@ public class Simulator extends javax.swing.JFrame {
             j = 0;
             i++;
         }
-        if (SinNodosAislados(Adyacencia, num_nodos) == true) {
+        if (SinNodosAislados(Adyacencia, num_nodos)) {
             MatrizDeAdyacencia(num_nodos);
         }
     }
@@ -163,7 +187,7 @@ public class Simulator extends javax.swing.JFrame {
         closeButton1 = new javax.swing.JButton();
         errorLabel = new javax.swing.JTextField();
         errorLabel1 = new javax.swing.JTextField();
-        jPanel1 = new javax.swing.JPanel();
+        backgroundPanel = new javax.swing.JPanel();
         closeButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
         numberLabel = new javax.swing.JLabel();
@@ -171,7 +195,7 @@ public class Simulator extends javax.swing.JFrame {
         resetButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
         playButton = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        settingsPanel = new javax.swing.JPanel();
         numberNodesLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         allMaskButton1 = new javax.swing.JButton();
@@ -310,8 +334,8 @@ public class Simulator extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        backgroundPanel.setBackground(new java.awt.Color(255, 255, 255));
+        backgroundPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         closeButton.setBackground(new java.awt.Color(255, 255, 255));
         closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/close.png"))); // NOI18N
@@ -322,7 +346,7 @@ public class Simulator extends javax.swing.JFrame {
                 closeButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 20, 80, -1));
+        backgroundPanel.add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 20, 80, -1));
 
         stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/stop.png"))); // NOI18N
         stopButton.setToolTipText("Stop");
@@ -333,14 +357,14 @@ public class Simulator extends javax.swing.JFrame {
                 stopButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(stopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 350, 110, -1));
+        backgroundPanel.add(stopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 350, 110, -1));
 
         numberLabel.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 48)); // NOI18N
         numberLabel.setText("0");
-        jPanel1.add(numberLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 40, 20, -1));
+        backgroundPanel.add(numberLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 40, 20, -1));
 
         styleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/contador.png"))); // NOI18N
-        jPanel1.add(styleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 0, 140, -1));
+        backgroundPanel.add(styleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 0, 140, -1));
 
         resetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reset.png"))); // NOI18N
         resetButton.setToolTipText("Reset");
@@ -351,13 +375,13 @@ public class Simulator extends javax.swing.JFrame {
                 resetButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(resetButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, 110, -1));
+        backgroundPanel.add(resetButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, 110, -1));
 
         nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/play.png"))); // NOI18N
         nextButton.setToolTipText("Next");
         nextButton.setBorderPainted(false);
         nextButton.setContentAreaFilled(false);
-        jPanel1.add(nextButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 30, 110, -1));
+        backgroundPanel.add(nextButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 30, 80, -1));
 
         playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/play1.png"))); // NOI18N
         playButton.setToolTipText("Play");
@@ -368,22 +392,22 @@ public class Simulator extends javax.swing.JFrame {
                 playButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(playButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 280, 110, -1));
+        backgroundPanel.add(playButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 280, 110, -1));
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Settings", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tw Cen MT Condensed", 0, 24))); // NOI18N
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        settingsPanel.setBackground(new java.awt.Color(255, 255, 255));
+        settingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Settings", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tw Cen MT Condensed", 0, 24))); // NOI18N
+        settingsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         numberNodesLabel.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 24)); // NOI18N
         numberNodesLabel.setForeground(new java.awt.Color(102, 102, 102));
         numberNodesLabel.setText("0");
-        jPanel3.add(numberNodesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, 30));
+        settingsPanel.add(numberNodesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, 30));
 
         jLabel2.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 24)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/partes.png"))); // NOI18N
         jLabel2.setToolTipText("Number of nodes");
-        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 90, 80));
+        settingsPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 90, 80));
 
         allMaskButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mask2.png"))); // NOI18N
         allMaskButton1.setToolTipText("With a mask");
@@ -394,7 +418,7 @@ public class Simulator extends javax.swing.JFrame {
                 allMaskButton1ActionPerformed(evt);
             }
         });
-        jPanel3.add(allMaskButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 90, 70));
+        settingsPanel.add(allMaskButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 90, 70));
 
         maskRandomButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/aleatorio.png"))); // NOI18N
         maskRandomButton1.setBorderPainted(false);
@@ -404,7 +428,7 @@ public class Simulator extends javax.swing.JFrame {
                 maskRandomButton1ActionPerformed(evt);
             }
         });
-        jPanel3.add(maskRandomButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 90, 70));
+        settingsPanel.add(maskRandomButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 90, 70));
 
         withoutMaskButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Whithout MAsk.png"))); // NOI18N
         withoutMaskButton1.setBorderPainted(false);
@@ -414,19 +438,19 @@ public class Simulator extends javax.swing.JFrame {
                 withoutMaskButton1ActionPerformed(evt);
             }
         });
-        jPanel3.add(withoutMaskButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 90, 60));
+        settingsPanel.add(withoutMaskButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 90, 60));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 90, 200));
+        backgroundPanel.add(settingsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 90, 200));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(backgroundPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
         );
 
         pack();
@@ -442,6 +466,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         boolean sw = false, sw1 = false;
+        //validaciones
         try {
             errorLabel.setText("");
             nodos = Integer.parseInt(nodosTextField.getText());
@@ -610,6 +635,7 @@ public class Simulator extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton allMaskButton;
     private javax.swing.JButton allMaskButton1;
+    private javax.swing.JPanel backgroundPanel;
     private javax.swing.JButton closeButton;
     private javax.swing.JButton closeButton1;
     private javax.swing.JTextField errorLabel;
@@ -618,9 +644,7 @@ public class Simulator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JButton maskRandomButton;
     private javax.swing.JButton maskRandomButton1;
     private javax.swing.JButton nextButton;
@@ -629,6 +653,7 @@ public class Simulator extends javax.swing.JFrame {
     private javax.swing.JLabel numberNodesLabel;
     private javax.swing.JButton playButton;
     private javax.swing.JButton resetButton;
+    private javax.swing.JPanel settingsPanel;
     private javax.swing.JButton startButton;
     private javax.swing.JButton stopButton;
     private javax.swing.JLabel styleLabel;
