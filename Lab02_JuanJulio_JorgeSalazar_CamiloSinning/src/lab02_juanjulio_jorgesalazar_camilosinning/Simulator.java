@@ -34,7 +34,7 @@ public class Simulator extends javax.swing.JFrame {
         setUndecorated(true);
         initialSettings.setVisible(true);
         initialSettings.setLocationRelativeTo(null);
-      
+
         //ubicar panel
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int sy = screenSize.height;
@@ -66,7 +66,6 @@ public class Simulator extends javax.swing.JFrame {
     }
 
     Vértice PTR;
-
 
     //Crea el grafo a partir de una matriz y una lista de adyacencia
     public void InicioGrafo(int num_nodos, int mascarilla) {
@@ -202,7 +201,7 @@ public class Simulator extends javax.swing.JFrame {
                     if (p.linkIncidentes == null) {
                         p.linkIncidentes = q;
                     } else {
-                        while(p.linkIncidentes != null){
+                        while (p.linkIncidentes != null) {
                             p = p.linkIncidentes;
                         }
                         p.linkIncidentes = q;
@@ -214,19 +213,42 @@ public class Simulator extends javax.swing.JFrame {
             i++;
         }
     }
-    
+
     //Se encarga de generar las iteraciones en simulador y actualizar 
-    public void Iteracion(){
-        Vértice p, aux;
-        
+    public void Iteracion(int Matriz[][]) {
+        Vértice p;
+
         p = PTR;
-        while(p != null && p.enfermo == 0){
+        while (p != null && p.enfermo == 0) {
             p = p.link;
         }
-        aux = p.linkIncidentes;
-        while(aux != null){
-            if(aux.mascarilla == 0){
-                
+        ProximosEnfermos(p, Matriz);
+    }
+
+    //Calcula el próximo contagiado en caso de que lo haya
+    public void ProximosEnfermos(Vértice p, int Matriz[][]) {
+        Vértice aux;
+
+        if (p.linkIncidentes != null) {
+            aux = p.linkIncidentes;
+            while (aux != null && aux.enfermo == 1) {
+                aux = aux.linkIncidentes;
+            }
+            if (aux == null) {
+                if (p.link != null) {
+                    p = p.link;
+                    while (p != null && p.enfermo == 0) {
+                        p = p.link;
+                    }
+                    ProximosEnfermos(p, Matriz);
+                } else {
+                    //Se terminó la simulación
+                    //Se puede crear un JOptionPane o algo
+                }
+            }else{
+                if (p.mascarilla == 0 && aux.mascarilla == 0 && Matriz[p.num - 1][aux.num - 1] > 2){
+                    //seguir
+                }
             }
         }
     }
@@ -596,9 +618,7 @@ public class Simulator extends javax.swing.JFrame {
         } catch (Exception e) {
             errorLabel.setText("Invalido");
         }
-        
-        
-        
+
         // TODO add your handling code here:
     }//GEN-LAST:event_startButtonActionPerformed
 
