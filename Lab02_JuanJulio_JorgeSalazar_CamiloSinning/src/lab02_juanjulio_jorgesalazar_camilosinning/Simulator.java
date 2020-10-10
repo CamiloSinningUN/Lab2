@@ -68,6 +68,7 @@ public class Simulator extends javax.swing.JFrame {
     Vértice PTR;
 
 
+    
     //Crea el grafo a partir de una matriz y una lista de adyacencia
     public void InicioGrafo(int num_nodos, int mascarilla) {
         int i = 0, j = 0;
@@ -269,7 +270,7 @@ public class Simulator extends javax.swing.JFrame {
         tablero = new javax.swing.JPanel(){
             @Override
             public void paint(Graphics g){
-                Graficar.GraficarNodo(g, 50, 0, 0, 1);
+
             }
         };
 
