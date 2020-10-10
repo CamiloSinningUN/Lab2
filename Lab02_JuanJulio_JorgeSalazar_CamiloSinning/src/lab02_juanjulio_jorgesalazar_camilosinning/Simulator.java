@@ -68,8 +68,8 @@ public class Simulator extends javax.swing.JFrame {
     Vértice PTR;
 
 
-    //Matriz que representa las relaciones de unos nodos con otros en el grafo dirigido
-    public void MatrizDeAdyacencia(int num_nodos, int mascarilla) {
+    //Crea el grafo a partir de una matriz y una lista de adyacencia
+    public void InicioGrafo(int num_nodos, int mascarilla) {
         int i = 0, j = 0;
         int[][] Adyacencia = new int[num_nodos][num_nodos];
 
@@ -90,7 +90,7 @@ public class Simulator extends javax.swing.JFrame {
             i++;
         }
         if (SinNodosAislados(Adyacencia, num_nodos)) {
-            MatrizDeAdyacencia(num_nodos, mascarilla);
+            InicioGrafo(num_nodos, mascarilla);
         }
         GrafoComoLista(num_nodos, mascarilla, Adyacencia);
     }
@@ -156,8 +156,7 @@ public class Simulator extends javax.swing.JFrame {
         }
         ListaDeAdyacencia(Matriz, num_nodos, mascarilla);
         infectado = PrimerInfectado(num_nodos, Matriz);
-        ActualizaInfectados(infectado);
-        //Si se dibuja aquí estaría el grafo con el primer infectado   
+        ActualizaInfectados(infectado, Matriz);
     }
 
     //Función que da al azar el primer infectado
@@ -176,7 +175,7 @@ public class Simulator extends javax.swing.JFrame {
     }
 
     //Función que actualiza la lista con los infectados
-    public void ActualizaInfectados(int infectado) {
+    public void ActualizaInfectados(int infectado, int Matriz[][]) {
         Vértice p;
 
         p = PTR;
@@ -184,6 +183,7 @@ public class Simulator extends javax.swing.JFrame {
             p = p.link;
         }
         p.enfermo = 1;
+        //Aquí se podría dibujar luego de cada iteración
     }
 
     //Crea una multilista con los grafos y sus conexiones a partir de la lista ya creada
@@ -199,7 +199,7 @@ public class Simulator extends javax.swing.JFrame {
                     while (p.num != (i + 1)) {
                         p = p.link;
                     }
-                    if (p.linkArista == null) {
+                    if (p.linkIncidentes == null) {
                         p.linkIncidentes = q;
                     } else {
                         while(p.linkIncidentes != null){
@@ -217,7 +217,18 @@ public class Simulator extends javax.swing.JFrame {
     
     //Se encarga de generar las iteraciones en simulador y actualizar 
     public void Iteracion(){
+        Vértice p, aux;
         
+        p = PTR;
+        while(p != null && p.enfermo == 0){
+            p = p.link;
+        }
+        aux = p.linkIncidentes;
+        while(aux != null){
+            if(aux.mascarilla == 0){
+                
+            }
+        }
     }
 
     /**
