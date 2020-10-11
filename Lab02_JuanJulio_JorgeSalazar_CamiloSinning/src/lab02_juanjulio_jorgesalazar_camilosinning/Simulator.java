@@ -229,18 +229,18 @@ public class Simulator extends javax.swing.JFrame {
 
     //Se encarga de generar las iteraciones en simulador y actualizar 
 
-    public void Iteracion(int Matriz[][]) {
+    public void Iteracion(Graphics g, int Matriz[][]) {
         Vértice p;
         p = PTR;
         while (p != null && p.enfermo == 0) {
             p = p.link;
         }
 
-        ProximosEnfermos(p, Matriz);
+        ProximosEnfermos(g, p, Matriz);
     }
 
     //Calcula el próximo contagiado en caso de que lo haya según las probabilidades dadas por el lab
-    public void ProximosEnfermos(Vértice p, int Matriz[][]) {
+    public void ProximosEnfermos(Graphics g, Vértice p, int Matriz[][]) {
         Vértice aux;
 
         if (p.linkIncidentes != null) {
@@ -258,24 +258,24 @@ public class Simulator extends javax.swing.JFrame {
                         //Se terminó la simulación
                         //Se puede crear un JOptionPane o algo
                     } else {
-                        ProximosEnfermos(p, Matriz);
+                        ProximosEnfermos(g, p, Matriz);
                     }
                 } else {
                     //Se terminó la simulación
                     //Se puede crear un JOptionPane o algo
                 }
             } else {
-                CalculaProbabilidades(p, aux, Matriz);
+                CalculaProbabilidades(g, p, aux, Matriz);
             }
         }
     }
 
-    public void CalculaProbabilidades(Vértice p, Vértice aux, int Matriz[][]) {
+    public void CalculaProbabilidades(Graphics g,Vértice p, Vértice aux, int Matriz[][]) {
         if (p.mascarilla == 0 && aux.mascarilla == 0 && Matriz[p.num - 1][aux.num - 1] > 2) {
             int prob;
             prob = (int) (Math.random() * 100 + 1);
             if (prob <= 80) {
-                ActualizaInfectados(aux.num, Matriz);
+                ActualizaInfectados(g,aux.num, Matriz);
             }
             if (aux.linkIncidentes != null) {
                 aux = aux.linkIncidentes;
@@ -294,7 +294,7 @@ public class Simulator extends javax.swing.JFrame {
                         //Se terminó la simulación
                         //Se puede crear un JOptionPane o algo
                     } else {
-                        ProximosEnfermos(p, Matriz);
+                        ProximosEnfermos(g, p, Matriz);
                     }
                 } else {
                     //Se terminó la simulación
