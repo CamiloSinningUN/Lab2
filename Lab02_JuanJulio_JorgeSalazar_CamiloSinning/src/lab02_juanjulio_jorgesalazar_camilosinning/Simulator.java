@@ -67,7 +67,6 @@ public class Simulator extends javax.swing.JFrame {
 
     Vértice PTR;
 
-
     //Crea el grafo a partir de una matriz y una lista de adyacencia
     public void InicioGrafo(int num_nodos, int mascarilla) {
         int i = 0, j = 0;
@@ -201,6 +200,7 @@ public class Simulator extends javax.swing.JFrame {
                     }
                     if (p.linkIncidentes == null) {
                         p.linkIncidentes = q;
+                       
                     } else {
                         while (p.linkIncidentes != null) {
                             p = p.linkIncidentes;
@@ -226,7 +226,7 @@ public class Simulator extends javax.swing.JFrame {
         ProximosEnfermos(p, Matriz);
     }
 
-    //Calcula el próximo contagiado en caso de que lo haya
+    //Calcula el próximo contagiado en caso de que lo haya según las probabilidades dadas por el lab
     public void ProximosEnfermos(Vértice p, int Matriz[][]) {
         Vértice aux;
 
@@ -241,16 +241,66 @@ public class Simulator extends javax.swing.JFrame {
                     while (p != null && p.enfermo == 0) {
                         p = p.link;
                     }
-                    ProximosEnfermos(p, Matriz);
+                    if (p == null) {
+                        //Se terminó la simulación
+                        //Se puede crear un JOptionPane o algo
+                    } else {
+                        ProximosEnfermos(p, Matriz);
+                    }
                 } else {
                     //Se terminó la simulación
                     //Se puede crear un JOptionPane o algo
                 }
-            }else{
-                if (p.mascarilla == 0 && aux.mascarilla == 0 && Matriz[p.num - 1][aux.num - 1] > 2){
-                    //seguir
+            } else {
+                CalculaProbabilidades(p, aux, Matriz);
+            }
+        }
+    }
+
+    public void CalculaProbabilidades(Vértice p, Vértice aux, int Matriz[][]) {
+        if (p.mascarilla == 0 && aux.mascarilla == 0 && Matriz[p.num - 1][aux.num - 1] > 2) {
+            int prob;
+            prob = (int) (Math.random() * 100 + 1);
+            if (prob <= 80) {
+                ActualizaInfectados(aux.num, Matriz);
+            }
+            if (aux.linkIncidentes != null) {
+                aux = aux.linkIncidentes;
+                while (aux != null && aux.enfermo == 1) {
+                    aux = aux.linkIncidentes;
                 }
             }
+            if (aux == null) {
+                if (p.link != null) {
+                    p = p.link;
+                    while (p != null && p.enfermo == 0) {
+                        p = p.link;
+                    }
+                    if (p == null) {
+                        //Se terminó la simulación
+                        //Se puede crear un JOptionPane o algo
+                    } else {
+                        ProximosEnfermos(p, Matriz);
+                    }
+                } else {
+                    //Se terminó la simulación
+                    //Se puede crear un JOptionPane o algo
+                }
+            }
+        } else if (p.mascarilla == 0 && aux.mascarilla == 0 && Matriz[p.num - 1][aux.num - 1] <= 2) {
+
+        } else if (p.mascarilla == 0 && aux.mascarilla == 1 && Matriz[p.num - 1][aux.num - 1] > 2) {
+
+        } else if (p.mascarilla == 0 && aux.mascarilla == 1 && Matriz[p.num - 1][aux.num - 1] <= 2) {
+
+        } else if (p.mascarilla == 1 && aux.mascarilla == 0 && Matriz[p.num - 1][aux.num - 1] > 2) {
+
+        } else if (p.mascarilla == 1 && aux.mascarilla == 0 && Matriz[p.num - 1][aux.num - 1] <= 2) {
+
+        } else if (p.mascarilla == 1 && aux.mascarilla == 1 && Matriz[p.num - 1][aux.num - 1] > 2) {
+
+        } else if (p.mascarilla == 1 && aux.mascarilla == 1 && Matriz[p.num - 1][aux.num - 1] <= 2) {
+
         }
     }
 
