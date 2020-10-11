@@ -34,7 +34,8 @@ public class Simulator extends javax.swing.JFrame {
         setUndecorated(true);
         initialSettings.setVisible(true);
         initialSettings.setLocationRelativeTo(null);
-      
+
+        //ubicar UI
         //ubicar panel
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int sy = screenSize.height;
@@ -57,20 +58,22 @@ public class Simulator extends javax.swing.JFrame {
 
         //Botones de reproduccion automatica
         int y = backgroundPanel.getSize().height;
-        playButton.setLocation(sx - playButton.getSize().width, sy / 2 - playButton.getHeight() / 2 - 15);
-        stopButton.setLocation(sx - stopButton.getSize().width, sy / 2 + stopButton.getHeight() / 2 - 5);
+        playStopPanel.setLocation(sx - 15 - playStopPanel.getSize().width, y / 2 - settingsPanel.getHeight() / 2);
 
         //ubicando settings
         settingsPanel.setLocation(15, y / 2 - settingsPanel.getHeight() / 2);
+
+        //ubicar tablero
+        tablero.setLocation(settingsPanel.getLocation().x + settingsPanel.getSize().width + 15, styleLabel.getLocation().y + styleLabel.getSize().height);
+        tablero.setSize(sx - tablero.getLocation().x * 2, sy - tablero.getLocation().y - 50);
+        //Fin ubicar
 
     }
 
     Vértice PTR;
 
-
-    
     //Crea el grafo a partir de una matriz y una lista de adyacencia
-    public void InicioGrafo(int num_nodos, int mascarilla) {
+    public void InicioGrafo(Graphics g, int num_nodos, int mascarilla) {
         int i = 0, j = 0;
         int[][] Adyacencia = new int[num_nodos][num_nodos];
 
@@ -91,9 +94,9 @@ public class Simulator extends javax.swing.JFrame {
             i++;
         }
         if (SinNodosAislados(Adyacencia, num_nodos)) {
-            InicioGrafo(num_nodos, mascarilla);
+            InicioGrafo(g, num_nodos, mascarilla);
         }
-        GrafoComoLista(num_nodos, mascarilla, Adyacencia);
+        GrafoComoLista(g, num_nodos, mascarilla, Adyacencia);
     }
 
     //Verifica que no haya nodos aislados
@@ -124,7 +127,7 @@ public class Simulator extends javax.swing.JFrame {
     }
 
     //Crea una lista donde cada nodo tendrá las características de los nodos del grafo
-    public void GrafoComoLista(int num_nodos, int mascarilla, int Matriz[][]) {
+    public void GrafoComoLista(Graphics g, int num_nodos, int mascarilla, int Matriz[][]) {
         int i = 0;
         Vértice p;
         int infectado;
@@ -157,7 +160,7 @@ public class Simulator extends javax.swing.JFrame {
         }
         ListaDeAdyacencia(Matriz, num_nodos, mascarilla);
         infectado = PrimerInfectado(num_nodos, Matriz);
-        ActualizaInfectados(infectado, Matriz);
+        ActualizaInfectados(g, infectado, Matriz);
     }
 
     //Función que da al azar el primer infectado
@@ -176,7 +179,7 @@ public class Simulator extends javax.swing.JFrame {
     }
 
     //Función que actualiza la lista con los infectados
-    public void ActualizaInfectados(int infectado, int Matriz[][]) {
+    public void ActualizaInfectados(Graphics g, int infectado, int Matriz[][]) {
         Vértice p;
 
         p = PTR;
@@ -184,7 +187,7 @@ public class Simulator extends javax.swing.JFrame {
             p = p.link;
         }
         p.enfermo = 1;
-        //Aquí se podría dibujar luego de cada iteración
+        Graficar.GraficarInicio(g, Matriz);
     }
 
     //Crea una multilista con los grafos y sus conexiones a partir de la lista ya creada
@@ -197,17 +200,21 @@ public class Simulator extends javax.swing.JFrame {
             while (j < num_nodos) {
                 if (Matriz[i][j] > 0) {
                     Vértice q = new Vértice(0, mascarilla, j);
-                    while (p.num != (i + 1)) {
+                    while ((p != null) && (p.num != (i + 1))) {
                         p = p.link;
                     }
-                    if (p.linkIncidentes == null) {
-                        p.linkIncidentes = q;
-                    } else {
-                        while(p.linkIncidentes != null){
-                            p = p.linkIncidentes;
-                        }
+                    if ((p != null) && (p.linkIncidentes == null)) {
                         p.linkIncidentes = q;
                         q.linkIncidentes = null;
+                    } else {
+                        while ((p != null) && (p.linkIncidentes != null)) {
+                            p = p.linkIncidentes;
+                        }
+                        if (p != null) {
+                            p.linkIncidentes = q;
+                            q.linkIncidentes = null;
+                        }
+
                     }
                 }
                 j++;
@@ -215,19 +222,19 @@ public class Simulator extends javax.swing.JFrame {
             i++;
         }
     }
-    
+
     //Se encarga de generar las iteraciones en simulador y actualizar 
-    public void Iteracion(){
+    public void Iteracion() {
         Vértice p, aux;
-        
+
         p = PTR;
-        while(p != null && p.enfermo == 0){
+        while (p != null && p.enfermo == 0) {
             p = p.link;
         }
         aux = p.linkIncidentes;
-        while(aux != null){
-            if(aux.mascarilla == 0){
-                
+        while (aux != null) {
+            if (aux.mascarilla == 0) {
+
             }
         }
     }
@@ -255,12 +262,10 @@ public class Simulator extends javax.swing.JFrame {
         errorLabel1 = new javax.swing.JTextField();
         backgroundPanel = new javax.swing.JPanel();
         closeButton = new javax.swing.JButton();
-        stopButton = new javax.swing.JButton();
         numberLabel = new javax.swing.JLabel();
         styleLabel = new javax.swing.JLabel();
         resetButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
-        playButton = new javax.swing.JButton();
         settingsPanel = new javax.swing.JPanel();
         numberNodesLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -270,9 +275,13 @@ public class Simulator extends javax.swing.JFrame {
         tablero = new javax.swing.JPanel(){
             @Override
             public void paint(Graphics g){
-
+                super.paint(g);
+                InicioGrafo(g,nodos,maskMode);
             }
         };
+        playStopPanel = new javax.swing.JPanel();
+        playButton = new javax.swing.JButton();
+        stopButton = new javax.swing.JButton();
 
         initialSettings.setMinimumSize(new java.awt.Dimension(391, 605));
         initialSettings.setUndecorated(true);
@@ -420,23 +429,12 @@ public class Simulator extends javax.swing.JFrame {
         });
         backgroundPanel.add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 0, 130, 140));
 
-        stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/stop.png"))); // NOI18N
-        stopButton.setToolTipText("Stop");
-        stopButton.setBorderPainted(false);
-        stopButton.setContentAreaFilled(false);
-        stopButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopButtonActionPerformed(evt);
-            }
-        });
-        backgroundPanel.add(stopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 360, 120, 60));
-
         numberLabel.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 48)); // NOI18N
         numberLabel.setText("0");
         backgroundPanel.add(numberLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 40, 20, -1));
 
         styleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/contador.png"))); // NOI18N
-        backgroundPanel.add(styleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 0, 130, -1));
+        backgroundPanel.add(styleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 0, 130, 130));
 
         resetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reset.png"))); // NOI18N
         resetButton.setToolTipText("Reset");
@@ -455,19 +453,8 @@ public class Simulator extends javax.swing.JFrame {
         nextButton.setContentAreaFilled(false);
         backgroundPanel.add(nextButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 30, 80, -1));
 
-        playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/play1.png"))); // NOI18N
-        playButton.setToolTipText("Play");
-        playButton.setBorderPainted(false);
-        playButton.setContentAreaFilled(false);
-        playButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playButtonActionPerformed(evt);
-            }
-        });
-        backgroundPanel.add(playButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 290, 120, 60));
-
         settingsPanel.setBackground(new java.awt.Color(255, 255, 255));
-        settingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Settings", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tw Cen MT Condensed", 0, 24))); // NOI18N
+        settingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Settings", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tw Cen MT Condensed", 0, 24))); // NOI18N
         settingsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         numberNodesLabel.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 24)); // NOI18N
@@ -528,6 +515,34 @@ public class Simulator extends javax.swing.JFrame {
         );
 
         backgroundPanel.add(tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, 1110, 450));
+
+        playStopPanel.setBackground(new java.awt.Color(255, 255, 255));
+        playStopPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Play/Stop", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tw Cen MT Condensed", 0, 24))); // NOI18N
+        playStopPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/play1.png"))); // NOI18N
+        playButton.setToolTipText("Play");
+        playButton.setBorderPainted(false);
+        playButton.setContentAreaFilled(false);
+        playButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playButtonActionPerformed(evt);
+            }
+        });
+        playStopPanel.add(playButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 90, 70));
+
+        stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/stop.png"))); // NOI18N
+        stopButton.setToolTipText("Stop");
+        stopButton.setBorderPainted(false);
+        stopButton.setContentAreaFilled(false);
+        stopButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopButtonActionPerformed(evt);
+            }
+        });
+        playStopPanel.add(stopButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 90, 70));
+
+        backgroundPanel.add(playStopPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 270, 90, 200));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -597,9 +612,7 @@ public class Simulator extends javax.swing.JFrame {
         } catch (Exception e) {
             errorLabel.setText("Invalido");
         }
-        
-        
-        
+
         // TODO add your handling code here:
     }//GEN-LAST:event_startButtonActionPerformed
 
@@ -622,6 +635,7 @@ public class Simulator extends javax.swing.JFrame {
     }//GEN-LAST:event_maskRandomButtonActionPerformed
 
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
+
         // TODO add your handling code here:
     }//GEN-LAST:event_playButtonActionPerformed
 
@@ -741,6 +755,7 @@ public class Simulator extends javax.swing.JFrame {
     private javax.swing.JLabel numberLabel;
     private javax.swing.JLabel numberNodesLabel;
     private javax.swing.JButton playButton;
+    private javax.swing.JPanel playStopPanel;
     private javax.swing.JButton resetButton;
     private javax.swing.JPanel settingsPanel;
     private javax.swing.JButton startButton;
