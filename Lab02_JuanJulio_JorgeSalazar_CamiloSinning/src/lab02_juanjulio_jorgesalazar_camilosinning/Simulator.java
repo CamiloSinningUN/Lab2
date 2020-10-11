@@ -189,7 +189,7 @@ public class Simulator extends javax.swing.JFrame {
             p = p.link;
         }
         p.enfermo = 1;
-        Graficar.GraficarInicio(g, Matriz);
+        Graficar.GraficarInicio(g, Matriz,tablero);
     }
 
     //Crea una multilista con los grafos y sus conexiones a partir de la lista ya creada

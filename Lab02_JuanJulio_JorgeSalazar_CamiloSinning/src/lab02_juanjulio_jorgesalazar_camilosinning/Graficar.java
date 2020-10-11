@@ -6,6 +6,7 @@
 package lab02_juanjulio_jorgesalazar_camilosinning;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Toolkit;
@@ -47,7 +48,7 @@ public class Graficar {
         g.drawString(peso + "", x0 - x1, y0 - y1);
     }
 
-    public static void GraficarInicio(Graphics g, int Matriz[][]) {
+    public static void GraficarInicio(Graphics g, int Matriz[][],JPanel j) {
         int EntradaSalida = 0;
         int Entrada = 0;
         int Salida = 0;
@@ -62,15 +63,15 @@ public class Graficar {
         }
         int Particiones = EntradaSalida + Salida + Entrada; //depende de si es el mismo nodo el de salida y entrada o no
         
-        //dibujar nodo 1
-        GraficarNodo(g,20, Toolkit.getDefaultToolkit().getScreenSize().width/2,Toolkit.getDefaultToolkit().getScreenSize().height/2,1);
+        //dibujar nodo 1      
+        GraficarNodo(g,40, j.getSize().width/2,j.getSize().height/2,1);      
         for (int i = 0; i < Matriz.length; i++) {
             if ((Matriz[0][i] != 0) && (Matriz[i][0] != 0)) {
-                //EntradaSalida++;
+                //EntradaSalida
             } else if ((Matriz[0][i] != 0) && (Matriz[i][0] == 0)) {
-                //Salida++;
+                //Salida
             } else {
-                //Entrada++;
+                //Entrada
             }
         }
         double grados = 2 * Math.PI / Particiones;
