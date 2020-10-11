@@ -35,7 +35,9 @@ public class Simulator extends javax.swing.JFrame {
         initialSettings.setVisible(true);
         initialSettings.setLocationRelativeTo(null);
 
+
         //ubicar UI
+
         //ubicar panel
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int sy = screenSize.height;
@@ -205,9 +207,11 @@ public class Simulator extends javax.swing.JFrame {
                     }
                     if ((p != null) && (p.linkIncidentes == null)) {
                         p.linkIncidentes = q;
+
                         q.linkIncidentes = null;
                     } else {
                         while ((p != null) && (p.linkIncidentes != null)) {
+
                             p = p.linkIncidentes;
                         }
                         if (p != null) {
@@ -224,18 +228,93 @@ public class Simulator extends javax.swing.JFrame {
     }
 
     //Se encarga de generar las iteraciones en simulador y actualizar 
-    public void Iteracion() {
-        Vértice p, aux;
 
+    public void Iteracion(int Matriz[][]) {
+        Vértice p;
         p = PTR;
         while (p != null && p.enfermo == 0) {
             p = p.link;
         }
-        aux = p.linkIncidentes;
-        while (aux != null) {
-            if (aux.mascarilla == 0) {
+
+        ProximosEnfermos(p, Matriz);
+    }
+
+    //Calcula el próximo contagiado en caso de que lo haya según las probabilidades dadas por el lab
+    public void ProximosEnfermos(Vértice p, int Matriz[][]) {
+        Vértice aux;
+
+        if (p.linkIncidentes != null) {
+            aux = p.linkIncidentes;
+            while (aux != null && aux.enfermo == 1) {
+                aux = aux.linkIncidentes;
+            }
+            if (aux == null) {
+                if (p.link != null) {
+                    p = p.link;
+                    while (p != null && p.enfermo == 0) {
+                        p = p.link;
+                    }
+                    if (p == null) {
+                        //Se terminó la simulación
+                        //Se puede crear un JOptionPane o algo
+                    } else {
+                        ProximosEnfermos(p, Matriz);
+                    }
+                } else {
+                    //Se terminó la simulación
+                    //Se puede crear un JOptionPane o algo
+                }
+            } else {
+                CalculaProbabilidades(p, aux, Matriz);
+            }
+        }
+    }
+
+    public void CalculaProbabilidades(Vértice p, Vértice aux, int Matriz[][]) {
+        if (p.mascarilla == 0 && aux.mascarilla == 0 && Matriz[p.num - 1][aux.num - 1] > 2) {
+            int prob;
+            prob = (int) (Math.random() * 100 + 1);
+            if (prob <= 80) {
+                ActualizaInfectados(aux.num, Matriz);
+            }
+            if (aux.linkIncidentes != null) {
+                aux = aux.linkIncidentes;
+                while (aux != null && aux.enfermo == 1) {
+                    aux = aux.linkIncidentes;
+                }
 
             }
+            if (aux == null) {
+                if (p.link != null) {
+                    p = p.link;
+                    while (p != null && p.enfermo == 0) {
+                        p = p.link;
+                    }
+                    if (p == null) {
+                        //Se terminó la simulación
+                        //Se puede crear un JOptionPane o algo
+                    } else {
+                        ProximosEnfermos(p, Matriz);
+                    }
+                } else {
+                    //Se terminó la simulación
+                    //Se puede crear un JOptionPane o algo
+                }
+            }
+        } else if (p.mascarilla == 0 && aux.mascarilla == 0 && Matriz[p.num - 1][aux.num - 1] <= 2) {
+
+        } else if (p.mascarilla == 0 && aux.mascarilla == 1 && Matriz[p.num - 1][aux.num - 1] > 2) {
+
+        } else if (p.mascarilla == 0 && aux.mascarilla == 1 && Matriz[p.num - 1][aux.num - 1] <= 2) {
+
+        } else if (p.mascarilla == 1 && aux.mascarilla == 0 && Matriz[p.num - 1][aux.num - 1] > 2) {
+
+        } else if (p.mascarilla == 1 && aux.mascarilla == 0 && Matriz[p.num - 1][aux.num - 1] <= 2) {
+
+        } else if (p.mascarilla == 1 && aux.mascarilla == 1 && Matriz[p.num - 1][aux.num - 1] > 2) {
+
+        } else if (p.mascarilla == 1 && aux.mascarilla == 1 && Matriz[p.num - 1][aux.num - 1] <= 2) {
+
         }
     }
 
